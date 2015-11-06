@@ -4,15 +4,26 @@ import sqlalchemy
 
 
 def escape_string(string):
-    return sqlalchemy.text(str(string))
+    return sqlalchemy.text(string)
+
+
+def quote_string(string):
+    return '"{}"'.format(str(escape_string(string)))
 
 
 def mysql_list(l):
     return ','.join(map(str, l))
 
 
+def _escape(x):
+    if isinstance(x, basestring):
+        return quote_string(x)
+    else:
+        return str(x)
+
+
 def mysql_list_esc(l):
-    return ','.join(map(str, map(escape_string, l)))
+    return ','.join(map(_escape, l))
 
 
 def _is_iterable(i):

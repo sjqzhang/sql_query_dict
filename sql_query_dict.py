@@ -203,7 +203,7 @@ def select(tablename, cols, o=None, j=None, extra=None,
     # flatten tuple of values when >< operator (like a between) is used
     vals = _flatten_between(keys, vals)
 
-    vals = filter(_mysql_isval, vals)
+    vals = list(filter(_mysql_isval, vals))
 
     SQL += _mysql_other_fields(
         extra=extra, order_by=order_by, limit=limit, offset=offset

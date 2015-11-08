@@ -1,6 +1,12 @@
 import six
 import re
 import types
+import sys
+
+
+# python 3 doesnt have long
+if sys.version_info > (3,):
+    long = int
 
 
 def quote_string(string):

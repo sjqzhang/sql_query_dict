@@ -1,8 +1,20 @@
 import sql_query_dict
 
 
+def test_escape_string_with_single_quote():
+    assert sql_query_dict.quote_string("'a") == '"\'a"'
+
+
+def test_escape_string_with_double_quote():
+    assert sql_query_dict.quote_string('"a') == "'\"a'"
+
+
+def test_escape_string_with_single_and_double_quote():
+    assert sql_query_dict.quote_string(""" '" """) == """' \\\'" '"""
+
+
 def test_escape_string():
-    assert sql_query_dict.quote_string('a') == '"a"'
+    assert sql_query_dict.quote_string('a') == "'a'"
 
 
 def test_mysql_list_esc():
@@ -10,11 +22,11 @@ def test_mysql_list_esc():
 
 
 def test_mysql_list_esc_string_numbers():
-    assert sql_query_dict.mysql_list_esc(["1", "2"]) == '"1","2"'
+    assert sql_query_dict.mysql_list_esc(["1", "2"]) == "'1','2'"
 
 
 def test_mysql_list_esc_string():
-    assert sql_query_dict.mysql_list_esc(["a", "b"]) == '"a","b"'
+    assert sql_query_dict.mysql_list_esc(["a", "b"]) == "'a','b'"
 
 
 def test_mysql_list_with_none():

@@ -1,14 +1,9 @@
 import re
 import types
-import sqlalchemy
-
-
-def escape_string(string):
-    return sqlalchemy.text(string)
 
 
 def quote_string(string):
-    return '"{}"'.format(str(escape_string(string)))
+    return repr(str(string))
 
 
 def mysql_list(l):

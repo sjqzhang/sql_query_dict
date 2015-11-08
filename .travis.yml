@@ -14,7 +14,7 @@ install:
 # command to run tests
 before_script:
     flake8 .
-script: py.test --cov=sql_query_dict
+script: py.test test.py --cov=sql_query_dict
 notifications:
   email:
     - zdwiel@gmail.com

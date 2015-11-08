@@ -46,9 +46,12 @@ def test_mysql_with_gt_lt():
     # easiest way to handle both orderings of the clauses
     assert SQL in (
         "SELECT z FROM t WHERE  (y = %s)  AND  ((x > %s) AND (x < %s)) ",
-        "SELECT z FROM t WHERE  ((x > %s) AND (x < %s))  AND  (y = %s) "
+        "SELECT z FROM t WHERE  ((x > %s) AND (x < %s))  AND  (y = %s) ",
     )
-    assert vals == [1, 10, 30]
+    assert vals in (
+        [1, 10, 30],
+        [10, 30, 1],
+    )
 
 
 def test_mysql_not_in():

@@ -9,7 +9,7 @@ install_requires = [
 
 setup(
     name='sql_query_dict',
-    version='0.3',
+    version='0.4',
     description='express sql queries as python dictionaries',
     url='http://github.com/PlotWatt/sql_query_dict',
     author='PlotWatt',

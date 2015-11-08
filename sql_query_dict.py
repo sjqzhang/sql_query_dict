@@ -1,3 +1,4 @@
+import six
 import re
 import types
 
@@ -11,7 +12,7 @@ def mysql_list(l):
 
 
 def _escape(x):
-    if isinstance(x, basestring):
+    if isinstance(x, six.string_types):
         return quote_string(x)
     else:
         return str(x)
@@ -38,7 +39,7 @@ def is_number(x):
 
 
 def _mysql_is_list(val):
-    return _is_iterable(val) and not isinstance(val, basestring)
+    return _is_iterable(val) and not isinstance(val, six.string_types)
 
 
 def _mysql_isval(val):
@@ -176,7 +177,7 @@ def select(tablename, cols, o=None, j=None, extra=None,
     j = j or {}
 
     # if o is a number or string, treat it as an id
-    if not _is_iterable(o) or isinstance(o, basestring):
+    if not _is_iterable(o) or isinstance(o, six.string_types):
         o = {'id': long(o)}
 
     # ensure that keys and vals are in the same order, so they match up
@@ -239,7 +240,7 @@ def update(tablename, where, properties):
 def delete(tablename, properties):
     if isinstance(properties, list):
         properties = {'id': properties}
-    if not _is_iterable(properties) or isinstance(properties, basestring):
+    if not _is_iterable(properties) or isinstance(properties, six.string_types):
         properties = {'id': long(properties)}
 
     keys = properties.keys()

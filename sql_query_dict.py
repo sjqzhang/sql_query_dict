@@ -177,6 +177,15 @@ def _mysql_other_fields(extra=None, order_by=None, limit=None, offset=None):
     return ret
 
 
+def _parse_tablename(tablename):
+    if isinstance(tablename, six.string_types):
+        return tablename
+    elif _is_iterable(tablename):
+        return ','.join(map(str, tablename))
+    else:
+        raise TypeError('tablename expecting string or iterable')
+
+
 def select(tablename, cols, o=None, j=None, extra=None,
            order_by=None, limit=None, offset=None):
     o = o or {}
@@ -185,6 +194,8 @@ def select(tablename, cols, o=None, j=None, extra=None,
     # if o is a number or string, treat it as an id
     if not _is_iterable(o) or isinstance(o, six.string_types):
         o = {'id': long(o)}
+
+    tablename = _parse_tablename(tablename)
 
     # ensure that keys and vals are in the same order, so they match up
     keys = o.keys()

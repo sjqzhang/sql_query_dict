@@ -1,3 +1,5 @@
+import pytest
+
 import sql_query_dict
 
 
@@ -37,6 +39,21 @@ def test_mysql_list_with_none():
 def test_mysql_list_with_generator():
     assert sql_query_dict._mysql_clause('x', (x for x in [1, 2, 3])) == \
         " (x IN (1,2,3)) "
+
+
+def test_parse_tablename():
+    assert sql_query_dict._parse_tablename('xyz') == 'xyz'
+
+
+def test_parse_tablename_err():
+    with pytest.raises(TypeError):
+        sql_query_dict._parse_tablename(1)
+
+
+def test_parse_tablename_set():
+    assert sql_query_dict._parse_tablename(set(['xyz', 'abc'])) in (
+        'xyz,abc', 'abc,xyz'
+    )
 
 
 def test_mysql_with_gt_lt():

@@ -1,0 +1,22 @@
+language: python
+python:
+  - "2.7"
+  - "3.3"
+  - "3.4"
+  - "3.5"
+  - "pypy"
+  - "pypy3"
+# command to install dependencies
+install:
+  - pip install -r requirements_python.txt
+  - pip install pytest-cov coveralls
+  - pip install flake8
+# command to run tests
+before_script:
+    flake8 .
+script: py.test --cov=sql_query_dict
+notifications:
+  email:
+    - zdwiel@gmail.com
+after_success:
+  - coveralls

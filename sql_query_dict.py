@@ -240,7 +240,9 @@ def update(tablename, where, properties):
 def delete(tablename, properties):
     if isinstance(properties, list):
         properties = {'id': properties}
-    if not _is_iterable(properties) or isinstance(properties, six.string_types):
+    elif isinstance(properties, six.string_types):
+        properties = {'id': long(properties)}
+    elif not _is_iterable(properties):
         properties = {'id': long(properties)}
 
     keys = properties.keys()

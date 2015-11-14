@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/plotwatt/sql_query_dict.svg?branch=master)](https://travis-ci.org/plotwatt/sql_query_dict)
+[![Build Status](https://travis-ci.org/PlotWatt/sql_query_dict.svg?branch=master)](https://travis-ci.org/PlotWatt/sql_query_dict)
 
 # sql_query_dict
 express sql queries as python dictionaries

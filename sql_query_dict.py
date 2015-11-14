@@ -133,7 +133,7 @@ def _mysql_simple_clause(key, compare, val):
 
 
 def _split_key_compare(key):
-    key, compare = re.match('([^<>=~!]*)([<>=~!]*)', key).groups()
+    key, compare = re.match('([^<>=~!|]*)([<>=~!|]*)', key).groups()
     if compare == '':
         compare = '='
     return key, compare

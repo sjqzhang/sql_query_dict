@@ -19,6 +19,10 @@ def test_escape_string():
     assert sql_query_dict.quote_string('a') == "'a'"
 
 
+def test_split_key_compare():
+    assert sql_query_dict._split_key_compare('key|=') == ('key', '|=')
+
+
 def test_mysql_list_esc():
     assert sql_query_dict.mysql_list_esc([1, 2]) == "1,2"
 
@@ -29,6 +33,11 @@ def test_mysql_list_esc_string_numbers():
 
 def test_mysql_list_esc_string():
     assert sql_query_dict.mysql_list_esc(["a", "b"]) == "'a','b'"
+
+
+def test_mysql_list_with_or_equals():
+    assert sql_query_dict._mysql_clause('x|=', [1, 2, 3]) == \
+        " (x IN (1,2,3)) "
 
 
 def test_mysql_list_with_none():

@@ -110,12 +110,12 @@ def _mysql_clause_list(key, compare, val):
         return _mysql_simple_clause_list(key, compare, val)
 
 
-def _mysql_simple_clause(key, compare, val):
+def _mysql_simple_clause(key, compare, val, param_style):
     # default to '=' operator, and check for other comparison operators in
     # the key name
     if compare == '><':
-        return ' (({0} > %s) AND ({0} < %s)) '.format(
-            key
+        return ' (({0} > {1}) AND ({0} < {1})) '.format(
+            key, param_style
         )
 
     # check for now object or mysql_col object.
@@ -127,7 +127,7 @@ def _mysql_simple_clause(key, compare, val):
     elif isinstance(val, mysql_col):
         val = val
     else:
-        val = '%s'
+        val = param_style
 
     return ' ({0} {1} {2}) '.format(key, compare, val)
 
@@ -139,7 +139,7 @@ def _split_key_compare(key):
     return key, compare
 
 
-def _mysql_clause(key, val):
+def _mysql_clause(key, val, param_style):
     key, compare = _split_key_compare(key)
 
     if _mysql_is_list(val) and compare != '><':
@@ -150,7 +150,7 @@ def _mysql_clause(key, val):
         else:
             return ' ({0} IS NULL) '.format(key)
     else:
-        return _mysql_simple_clause(key, compare, val)
+        return _mysql_simple_clause(key, compare, val, param_style)
 
 
 def _flatten_between(keys, vals):
@@ -187,7 +187,7 @@ def _parse_tablename(tablename):
 
 
 def select(tablename, cols, o=None, j=None, extra=None,
-           order_by=None, limit=None, offset=None):
+           order_by=None, limit=None, offset=None, param_style='%s'):
     o = o or {}
     j = j or {}
 
@@ -203,7 +203,7 @@ def select(tablename, cols, o=None, j=None, extra=None,
 
     SQL = "SELECT {0} FROM {1} WHERE ".format(mysql_list(cols), tablename)
     SQL += ' AND '.join(
-        _mysql_clause(key, val) for key, val in zip(keys, vals)
+        _mysql_clause(key, val, param_style) for key, val in zip(keys, vals)
         if val is not mysql_ignore
     ) or '1'
     if j:

@@ -36,18 +36,19 @@ def test_mysql_list_esc_string():
 
 
 def test_mysql_list_with_or_equals():
-    assert sql_query_dict._mysql_clause('x|=', [1, 2, 3]) == \
+    assert sql_query_dict._mysql_clause('x|=', [1, 2, 3], '%s') == \
         " (x IN (1,2,3)) "
 
 
 def test_mysql_list_with_none():
-    assert sql_query_dict._mysql_clause('x', [None, False]) == \
+    assert sql_query_dict._mysql_clause('x', [None, False], '%s') == \
         ' ((x IS NULL) OR  (x IN (False)) ) '
 
 
 def test_mysql_list_with_generator():
-    assert sql_query_dict._mysql_clause('x', (x for x in [1, 2, 3])) == \
-        " (x IN (1,2,3)) "
+    assert sql_query_dict._mysql_clause(
+        'x', (x for x in [1, 2, 3]), '%s'
+    ) == " (x IN (1,2,3)) "
 
 
 def test_parse_tablename():
@@ -81,14 +82,14 @@ def test_mysql_with_gt_lt():
 
 
 def test_mysql_not_in():
-    assert sql_query_dict._mysql_clause('x!=', [1, 2, 3]) == \
+    assert sql_query_dict._mysql_clause('x!=', [1, 2, 3], '%s') == \
         " (x NOT IN (1,2,3)) "
 
 
 def test_mysql_list_compare_with_none():
     assert sql_query_dict._mysql_clause(
-        'x!=', [None, 1, 2, 3]
+        'x!=', [None, 1, 2, 3], '%s'
     ) == " ((x IS NOT NULL) AND  (x NOT IN (1,2,3)) ) "
     assert sql_query_dict._mysql_clause(
-        'x',   [None, 1, 2, 3]
+        'x',   [None, 1, 2, 3], '%s'
     ) == " ((x IS NULL) OR  (x IN (1,2,3)) ) "

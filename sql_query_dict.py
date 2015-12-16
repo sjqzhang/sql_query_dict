@@ -223,7 +223,7 @@ def select(tablename, cols, o=None, j=None, extra=None,
     return SQL, vals
 
 
-def update(tablename, where, properties):
+def update(tablename, where, properties, param_style='%s'):
     # ensure that keys and vals are in the same order, so they match up
     set_keys = properties.keys()
     set_vals = [properties[key] for key in set_keys
@@ -240,7 +240,7 @@ def update(tablename, where, properties):
 
     where_items = where.items()
     where_sql = ' AND '.join(
-        _mysql_clause(k, v) for k, v in where_items
+        _mysql_clause(k, v, param_style) for k, v in where_items
         if v is not mysql_ignore
     )
     where_vals = [v for k, v in where_items if _mysql_isval(v)]
@@ -254,7 +254,7 @@ def update(tablename, where, properties):
     return SQL, vals
 
 
-def delete(tablename, properties):
+def delete(tablename, properties, param_style='%s'):
     if isinstance(properties, list):
         properties = {'id': properties}
     elif isinstance(properties, six.string_types):
@@ -266,7 +266,7 @@ def delete(tablename, properties):
     vals = [properties[key] for key in keys
             if properties[key] != mysql_now]
     where = ' AND '.join(
-        _mysql_clause(key, val) for key, val in zip(keys, vals)
+        _mysql_clause(key, val, param_style) for key, val in zip(keys, vals)
         if val is not mysql_ignore
     )
 

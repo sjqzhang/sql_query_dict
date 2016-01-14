@@ -117,6 +117,8 @@ def _mysql_simple_clause(key, compare, val, param_style):
         return ' (({0} > {1}) AND ({0} < {1})) '.format(
             key, param_style
         )
+    elif compare == '~':
+        compare = 'LIKE'
 
     # check for now object or mysql_col object.
     # mysql_col will not get quoted, which is useful for

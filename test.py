@@ -81,6 +81,16 @@ def test_mysql_with_gt_lt():
     )
 
 
+def test_mysql_string_value():
+    assert sql_query_dict._mysql_clause('x', 'the', '%s') == \
+        " (x = %s) "
+
+
+def test_mysql_like():
+    assert sql_query_dict._mysql_clause('x~', 'the %', '%s') == \
+        " (x LIKE %s) "
+
+
 def test_mysql_not_in():
     assert sql_query_dict._mysql_clause('x!=', [1, 2, 3], '%s') == \
         " (x NOT IN (1,2,3)) "
